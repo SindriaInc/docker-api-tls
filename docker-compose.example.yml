@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+  docker-api:
+    image: kekru/docker-remote-api-tls:v0.2.0
+    container_name: "${APP_NAME}"
+    ports:
+     - 2376:443
+    environment:
+     - CREATE_CERTS_WITH_PW=${CERTS_PASSWORD}
+     - CERT_HOSTNAME=${APP_DOMAIN}
+    volumes:
+     - ${APP_DATA_PATH}/certs:/data/certs
+     - /var/run/docker.sock:/var/run/docker.sock:ro
+    hostname: "${APP_DOMAIN}"
+    networks:
+      default:
+        ipv4_address: "${SINDRIADOCK_DOCKER_API_IP_ADDRESS}"
+        aliases:
+          - "${APP_DOMAIN}"
+  
+
+# =networks
+networks:
+  default:
+    name: "vpc_${APP_NAME}"
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${SINDRIADOCK_NETWORK_SUBNET}
+       

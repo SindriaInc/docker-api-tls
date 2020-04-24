@@ -1,0 +1,8 @@
+/.idea
+
+.env
+docker-compose.yml
+storage/*
+
+!storage/data/.gitkeep
+!storage/logs/.gitkeep
